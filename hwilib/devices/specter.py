@@ -130,7 +130,18 @@ class SpecterClient(HardwareWalletClient):
 
     # Restore device from mnemonic or xprv
     def restore_device(self, label=''):
-        raise UnavailableActionError('Specter does not support restoring via software')
+        mnemonic = input("Enter your bip39 recovery phrase:\n")
+        return self.load_mnemonic(mnemonic, label)
+
+    # load mnemonic from software
+    def load_mnemonic(self, mnemonic, label=''):
+        self.query(f"load_mnemonic {mnemonic}")
+        self.query(f"set_label {label}")
+        return {"success": True}
+
+    def set_label(self, label=''):
+        self.query(f"set_label {label}")
+        return {"success": True}
 
     # Begin backup process
     def backup_device(self, label='', passphrase=''):
@@ -165,7 +176,7 @@ def enumerate(password=''):
             path = port
             data = {
                 'type': 'specter',
-                'model': 'specter-diy',
+                'model': 'specter-checksig',
                 'path': path,
                 'needs_passphrase': False
             }

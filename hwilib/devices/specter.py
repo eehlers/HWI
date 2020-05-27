@@ -90,10 +90,7 @@ class SpecterClient(HardwareWalletClient):
         if len(auth) == 0:
             signed_tx = self.query("sign %s" % tx.serialize())
         else:
-            try:
-                auth = auth.hex()
-            except:
-                pass
+            auth = auth.hex()
             signed_tx = self.query("signauth %s %s" % (tx.serialize(), auth))
         return {'psbt': signed_tx}
 
